@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lidl-twitter-user-service
+  template:
+    metadata:
+      labels:
+        app: lidl-twitter-user-service
+    spec:
+      containers:
+        - name: lidl-twitter-user-service
+          image: yorgoc/userservice:v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: lidl-twitter-user-service
+  ports:
+    - name: lidl-twitter-user-service
+      protocol: TCP
+      port: 80
+      targetPort: 80
